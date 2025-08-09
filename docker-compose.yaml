@@ -1,0 +1,39 @@
+# docker-compose.yaml
+
+services:
+  # описание сервиса price_app:
+  price_app:  
+    # используем файл с переменными среды
+    env_file:
+      - ./.env
+    # собираем образ с помощью Dockerfile
+    build:
+      dockerfile: Dockerfile_ml_service
+    # перенаправялем порты
+    ports:
+      - "${MAIN_APP_PORT}:${MAIN_APP_PORT}"    
+    hostname: price_app
+  
+  # описание сервиса Prometheus:
+  prometheus:
+    image: prom/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+    volumes:
+      - "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+    depends_on:
+      - price_app
+    hostname: prometheus
+  
+  # описание сервиса Grafana:
+  grafana:
+    image: grafana/grafana
+    env_file:
+      - ./.env
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASS}

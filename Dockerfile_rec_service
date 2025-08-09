@@ -1,0 +1,28 @@
+# Dockerfile с переменными окружения 
+
+FROM python:3.11-slim
+
+LABEL author=${AUTHOR}
+# ${AUTHOR} - это переменная среды
+
+RUN mkdir services
+COPY . ./services
+# инструкция COPY копирует содержимое текущей директории 
+# (. - указывает на текущую) в директорию,
+# которую указали второй командой – в данном случае это services
+WORKDIR /services 
+# изменяем рабочую директорию Docker 
+# эта команда похожа на инструкцию RUN ["cd", "./my_super_dir"]
+# в документации Docker рекомендуется использовать именно WORKDIR
+# в рабочей директории будут выполнены команды, указанные далее после CMD
+RUN pip3 install -r requirements.txt
+VOLUME /services/models
+# указываем, что директория models внутри контейнера будет являться томом
+# на этапе сборки docker создаст необходимые файлы на самой виртуальной машине
+# в директории /var/lib/docker/volumes/
+
+EXPOSE ${MAIN_APP_PORT}
+# эта инструкция указывает образу, 
+# что порт MAIN_APP_PORT должен быть открыт 'снаружи'
+
+CMD uvicorn ml_service.price_app:app --reload --host  0.0.0.0 --port ${MAIN_APP_PORT}

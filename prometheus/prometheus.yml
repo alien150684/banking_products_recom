@@ -1,0 +1,23 @@
+# prometheus.yml
+
+# секция global относится ко всем процессам сбора метрик
+global:
+  # как часто собирать метрики?
+  scrape_interval: 15s
+  
+  # если за это время сборщик не собрал метрики, то процесс прерывается
+  scrape_timeout: 10s
+  
+# далее описываются конфиги каждого сборщика метрик
+scrape_configs:
+  # имя сборщика
+  - job_name: 'scrapping-price-app'
+
+    # c какой страницы собирать метрики?
+    metrics_path: /metrics
+    scheme: http
+    
+    static_configs:
+    - targets:
+      # указывается адрес микросервиса
+      - price_app:1702
