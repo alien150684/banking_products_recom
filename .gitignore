@@ -176,4 +176,4 @@ recommendations (*).ipynb
 /data
 /recommendations
 /mlruns
-/app
+*.log

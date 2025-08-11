@@ -1,0 +1,26 @@
+# Dockerfile с переменными окружения 
+
+FROM python:3.10-slim
+LABEL author=${AUTHOR}
+# ${AUTHOR} - это переменная среды
+
+WORKDIR /app 
+# изменяем рабочую директорию Docker 
+# эта команда похожа на инструкцию RUN ["cd", "./app"]
+# в документации Docker рекомендуется использовать именно WORKDIR
+# в рабочей директории будут выполнены команды, указанные далее после CMD
+
+# Копируем только необходимые файлы
+COPY ./app .
+# COPY requirements.txt .
+
+# Устанавливаем зависимости
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# следующая инструкция указывает образу, 
+# что порт MAIN_APP_PORT должен быть открыт 'снаружи'
+EXPOSE ${MAIN_APP_PORT}
+
+CMD uvicorn recom_service:app --reload --host  0.0.0.0 --port ${MAIN_APP_PORT}
+# CMD ["python3", "./recom_service.py"]

@@ -11,7 +11,7 @@ global:
 # далее описываются конфиги каждого сборщика метрик
 scrape_configs:
   # имя сборщика
-  - job_name: 'scrapping-price-app'
+  - job_name: 'scrapping-recom-service'
 
     # c какой страницы собирать метрики?
     metrics_path: /metrics
@@ -20,4 +20,4 @@ scrape_configs:
     static_configs:
     - targets:
       # указывается адрес микросервиса
-      - price_app:1702
+      - recom_service:8000

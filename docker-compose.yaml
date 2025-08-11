@@ -1,18 +1,18 @@
 # docker-compose.yaml
 
 services:
-  # описание сервиса price_app:
-  price_app:  
+  # описание сервиса recom_service:
+  recom_service:  
     # используем файл с переменными среды
     env_file:
       - ./.env
     # собираем образ с помощью Dockerfile
     build:
-      dockerfile: Dockerfile_ml_service
+      dockerfile: Dockerfile_recom_service
     # перенаправялем порты
     ports:
       - "${MAIN_APP_PORT}:${MAIN_APP_PORT}"    
-    hostname: price_app
+    hostname: recom_service
   
   # описание сервиса Prometheus:
   prometheus:
@@ -24,7 +24,7 @@ services:
     volumes:
       - "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
     depends_on:
-      - price_app
+      - recom_service
     hostname: prometheus
   
   # описание сервиса Grafana:
