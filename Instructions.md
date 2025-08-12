@@ -5,9 +5,6 @@
 ## 1. Docker compose для микросервиса и системы мониторинга
 
 ```bash
-# команда перехода в нужную директорию
-cd services
-
 # команда для запуска микросервиса в режиме docker compose
 docker compose up --build
 
