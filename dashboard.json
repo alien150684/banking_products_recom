@@ -18,15 +18,15 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 1,
   "links": [],
   "panels": [
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "delqwxh1c44jkd"
+        "uid": "ceurtt1qf49hcf"
       },
-      "description": "Квантили значений выходного параметра уровне 0.05, 0.5 и 0.95",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -77,8 +77,7 @@
                 "value": 80
               }
             ]
-          },
-          "unit": "currencyRUB"
+          }
         },
         "overrides": []
       },
@@ -107,9 +106,9 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "histogram_quantile(0.05, price_app_predictions_bucket)",
+          "expr": "increase(request_personal_count_total[1m])",
           "interval": "",
-          "legendFormat": "0.05-квантиль",
+          "legendFormat": "personal recommendation",
           "range": true,
           "refId": "A"
         },
@@ -119,34 +118,21 @@
             "uid": "delqwxh1c44jkd"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.5, price_app_predictions_bucket)",
+          "expr": "increase(request_default_count_total[1m])",
           "hide": false,
           "instant": false,
-          "legendFormat": "0.5-квантиль",
+          "legendFormat": "default recommendation",
           "range": true,
           "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "delqwxh1c44jkd"
-          },
-          "editorMode": "code",
-          "expr": "histogram_quantile(0.95, price_app_predictions_bucket)",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "0.95-квантиль",
-          "range": true,
-          "refId": "C"
         }
       ],
-      "title": "Квантили ответов модели",
+      "title": "Количество запросов разных типов рекомендаций в минуту",
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "delqwxh1c44jkd"
+        "uid": "ceurtt1qf49hcf"
       },
       "description": "Потребление RAM в моменте",
       "fieldConfig": {
@@ -215,7 +201,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "delqwxh1c44jkd"
+        "uid": "ceurtt1qf49hcf"
       },
       "description": "Количество HTTP-запросов в секунду",
       "fieldConfig": {
@@ -301,7 +287,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "rate(http_request_duration_seconds_count{handler!=\"/openapi.json\"}[1m])",
+          "expr": "rate(http_request_duration_seconds_count{handler=\"/recommendations\"}[1m])",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "interval": "",
@@ -317,7 +303,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "delqwxh1c44jkd"
+        "uid": "ceurtt1qf49hcf"
       },
       "description": "Среднее время обработки пользовательских запросов, пришедших за крайнюю минуту.",
       "fieldConfig": {
@@ -404,7 +390,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "increase(http_request_duration_seconds_sum{handler=\"/api/price/\",method=\"POST\"}[1m]) / increase(http_request_duration_seconds_count{handler=\"/api/price/\",method=\"POST\"}[1m])",
+          "expr": "increase(http_request_duration_seconds_sum{handler=\"/recommendations\", method=\"POST\"}[1m]) / increase(http_request_duration_seconds_count{handler=\"/recommendations\", method=\"POST\"}[1m])",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "interval": "",
@@ -426,12 +412,12 @@
     "list": []
   },
   "time": {
-    "from": "2025-05-13T09:30:00.000Z",
-    "to": "2025-05-13T10:30:00.000Z"
+    "from": "now-1h",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Monitoring price application",
+  "title": "Monitoring recom service",
   "uid": "2d70214e-878d-4fc1-baa7-70f5b2479550",
-  "version": 15
+  "version": 7
 }

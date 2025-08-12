@@ -35,7 +35,7 @@ headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
 # =============================================================================
 
-for i in range(100):
+for i in range(500):
     # Создаем словарь c данными для отправки
     user_id = random.randint(15000, 1600000)
     params = {"user_id": user_id, 'k': 5}
