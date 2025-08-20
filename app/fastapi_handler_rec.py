@@ -33,11 +33,6 @@ class Recommendations:
 
         self._recs = {"personal": None, 
                       "default": None}
-        self._stats = {
-            "request_personal_count": 0,
-            "request_default_count": 0,
-        }
-        self.rec_type = None
 
     def load(self, type, path, **kwargs):
         """
@@ -57,24 +52,14 @@ class Recommendations:
         try:
             recs = self._recs["personal"].loc[user_id]
             recs = recs["item_id"].to_list()[:k]
-            self._stats["request_personal_count"] += 1
-            self.rec_type = "personal"
+            return {"recs": recs, "type": "personal"}
         except KeyError:
             recs = self._recs["default"]
             recs = recs["item_id"].to_list()[:k]
-            self._stats["request_default_count"] += 1
-            self.rec_type = "default"
+            return {"recs": recs, "type": "default"}
         except:
             logger.error("No recommendations found!")
-            recs = []
-
-        return recs
-
-    def stats(self):
-
-        logger.info("Stats for recommendations")
-        for name, value in self._stats.items():
-            logger.info(f"{name:<30} {value} ")
+            return None
 
 if __name__ == "__main__":
     logger = logging.getLogger(__name__)

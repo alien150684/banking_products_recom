@@ -118,12 +118,14 @@ async def recommendations(user_id: int, k:int = 5):
     Возвращает список рекомендаций длиной k для пользователя user_id
     """
    
-    recs = rec_store.get(user_id, k)
+    result = rec_store.get(user_id, k)
+    recs = result.get("recs")
+    rec_type = result.get("type")
 
-    if rec_store.rec_type == 'personal':
+    if rec_type == 'personal':
         # увеличиваем значение метрики на 1
         app.state.request_personal_count.inc()
-    elif rec_store.rec_type == 'default':
+    elif rec_type == 'default':
         # увеличиваем значение метрики на 1
         app.state.request_default_count.inc()
 
